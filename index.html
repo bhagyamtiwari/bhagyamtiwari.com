@@ -33,7 +33,7 @@
             cursor: default; 
             position: relative;
             display: flex;
-            flex-wrap: wrap; /* Allows wrapping on desktop if needed, but flex-start is controlled by JS positioning */
+            flex-wrap: wrap; 
             justify-content: flex-start;
             align-items: flex-start;
             text-transform: lowercase; 
@@ -144,11 +144,6 @@
         }
         
         .resize-handle { display: block; } /* Visible on desktop */
-        
-        /* Dino Box Specifics */
-        .dino-box { padding: 0; background: black;}
-        .dino-box .box-content { height: calc(100% - 35px); padding: 0;}
-        .dino-box .box-handle { margin: 0; height: 35px; background-color: var(--box-bg); border-radius: 8px 8px 0 0;}
 
         /* --- MOBILE OVERRIDES (For screens <= 768px) --- */
         @media (max-width: 768px) {
@@ -173,8 +168,8 @@
                 cursor: default !important;
             }
             
-            .resize-handle, #maximize-dino {
-                display: none !important; /* Hide resize handles and maximize button */
+            .resize-handle {
+                display: none !important; /* Hide resize handles */
             }
             
             .box-handle {
@@ -188,12 +183,15 @@
                 padding-right: 0;
             }
 
-            /* Fix embedded content heights on mobile */
-            .dino-box {
-                height: 300px !important; /* Fixed height for embedded game */
+            /* Mobile time display overrides */
+            #mobile-time-display {
+                display: block !important; /* Force show on mobile */
+                margin-top: -10px; /* Pull it up closer to the name */
+                margin-bottom: 10px;
+                font-size: 1.1em !important;
             }
-            .dino-box .box-content {
-                height: 100% !important;
+            #main-title {
+                margin-right: 0 !important;
             }
         }
         
@@ -236,6 +234,18 @@
         .timer-controls { display: flex; gap: 10px; justify-content: center; margin-bottom: 10px; }
         .timer-controls button { padding: 8px 15px; border-radius: 4px; border: none; cursor: pointer; font-weight: 600; }
 
+        /* General link box styling for consistent look */
+        .link-content a {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--link-color);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .link-content a:hover {
+            color: var(--accent-color);
+        }
+
     </style>
 </head>
 <body class="blurred-content">
@@ -258,7 +268,7 @@
     <div id="auth-overlay">
         <div id="auth-box">
             <h2 style="font-size: 1.5em; margin-bottom: 5px; color: var(--text-color);">access restricted</h2>
-            <p style="color: #666; margin-bottom: 10px;">enter the secret phrase to unlock the desktop, or wait 30 seconds for automatic access.</p>
+            <p style="color: #666; margin-bottom: 10px;">enter the secret phrase to unlock the desktop, or wait 10 seconds for automatic access.</p>
             <input type="password" id="password-input" placeholder="secret phrase">
             <button id="unlock-btn" onclick="checkPassword()">unlock desktop</button>
             <p id="auth-message" style="color: red; margin-top: 10px; font-size: 0.9em;"></p>
@@ -274,7 +284,11 @@
         <div class="box-handle"><span>/bhagyam_tiwari/profile.txt</span></div>
         
         <div class="box-content">
-            <h1 id="main-title" style="font-size: 2.2em; margin: 0 0 10px 0; color: var(--text-color); font-weight: 700;">bhagyam tiwari</h1>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-start mb-2">
+                <h1 id="main-title" style="font-size: 2.2em; margin: 0 10px 5px 0; color: var(--text-color); font-weight: 700;">bhagyam tiwari</h1>
+                <!-- This span is shown on mobile next to the title (per user request) -->
+                <span id="mobile-time-display" style="font-size: 1em; font-weight: 600; color: var(--link-color); display: none;"></span> 
+            </div>
             
             <div class="social-icons">
                 <a href="https://twitter.com/maygahb" target="_blank" title="x: @maygahb">
@@ -377,35 +391,38 @@
     </div>
 
 
-    <!-- 4. Dino Game Box -->
-    <div class="draggable-box dino-box" id="dino-box" style="width: 500px; height: 350px; top: 700px; left: 50px;">
+    <!-- 4. Dino Game Link Box -->
+    <div class="draggable-box link-content" style="width: 250px; height: 100px; top: 700px; left: 50px;">
         <div class="resize-handle top-left" data-direction="tl"></div>
         <div class="resize-handle top-right" data-direction="tr"></div>
         <div class="resize-handle bottom-left" data-direction="bl"></div>
         <div class="resize-handle bottom-right" data-direction="br"></div>
-        <div class="box-handle">
-            <span>/games/dino_runner.exe</span>
-            <button class="action-btn" id="maximize-dino">[MAXIMIZE]</button>
-        </div>
+        <span class="box-handle">chrome_dino.url</span>
         <div class="box-content">
-            <iframe id="dino-iframe" src="https://chromedino.com/" title="Chrome Dino Game" frameborder="0" scrolling="no" loading="lazy"></iframe>
+            <h3 style="margin: 0 0 5px 0; font-size: 1.2em; font-weight: 600;">chrome dino game</h3>
+            <p style="margin: 0; line-height: 1.3;">
+                <a href="https://chromedino.com/" target="_blank">click here to play</a>
+            </p>
         </div>
     </div>
 
-    <!-- 5. Sudoku Embed Box -->
-    <div class="draggable-box" style="width: 750px; height: 700px; top: 50px; left: 900px; padding: 0;">
+    <!-- 5. Sudoku Link Box -->
+    <div class="draggable-box link-content" style="width: 250px; height: 100px; top: 700px; left: 350px;">
         <div class="resize-handle top-left" data-direction="tl"></div>
         <div class="resize-handle top-right" data-direction="tr"></div>
         <div class="resize-handle bottom-left" data-direction="bl"></div>
         <div class="resize-handle bottom-right" data-direction="br"></div>
-        <div class="box-handle" style="margin: 0; border-radius: 8px 8px 0 0;"><span>/games/daily_sudoku.web</span></div>
-        <div class="box-content" style="height: calc(100% - 35px); padding: 0;">
-            <iframe src="https://sudoku.com/embed/daily/?theme=light" title="Daily Sudoku" frameborder="0" scrolling="no" allowfullscreen></iframe>
+        <span class="box-handle">sudoku_daily.url</span>
+        <div class="box-content">
+            <h3 style="margin: 0 0 5px 0; font-size: 1.2em; font-weight: 600;">daily sudoku</h3>
+            <p style="margin: 0; line-height: 1.3;">
+                <a href="https://sudoku.com/" target="_blank">click here to play</a>
+            </p>
         </div>
     </div>
     
     <!-- 6. Streaming Links Box -->
-    <div class="draggable-box" style="width: 250px; height: 280px; top: 700px; left: 850px;">
+    <div class="draggable-box" style="width: 250px; height: 280px; top: 700px; left: 650px;">
         <div class="resize-handle top-left" data-direction="tl"></div>
         <div class="resize-handle top-right" data-direction="tr"></div>
         <div class="resize-handle bottom-left" data-direction="bl"></div>
@@ -421,9 +438,9 @@
             </div>
         </div>
     </div>
-    
+
     <!-- 7. Fact of the Day Box -->
-    <div class="draggable-box" style="width: 350px; height: 150px; top: 800px; left: 450px;">
+    <div class="draggable-box" style="width: 350px; height: 150px; top: 400px; left: 850px;">
         <div class="resize-handle top-left" data-direction="tl"></div>
         <div class="resize-handle top-right" data-direction="tr"></div>
         <div class="resize-handle bottom-left" data-direction="bl"></div>
@@ -441,7 +458,7 @@
     </div>
     
     <!-- 8. NYT Wordle Link Box -->
-    <div class="draggable-box" style="width: 250px; height: 100px; top: 800px; left: 1200px;">
+    <div class="draggable-box link-content" style="width: 250px; height: 100px; top: 120px; left: 900px;">
         <div class="resize-handle top-left" data-direction="tl"></div>
         <div class="resize-handle top-right" data-direction="tr"></div>
         <div class="resize-handle bottom-left" data-direction="bl"></div>
@@ -450,13 +467,13 @@
         <div class="box-content">
             <h3 style="margin: 0 0 5px 0; font-size: 1.2em; font-weight: 600;">nyt wordle</h3>
             <p style="margin: 0; line-height: 1.3;">
-                <a href="https://www.nytimes.com/games/wordle/index.html" target="_blank" style="font-size: 1.1em; font-weight: 600;">click here to play</a>
+                <a href="https://www.nytimes.com/games/wordle/index.html" target="_blank">click here to play</a>
             </p>
         </div>
     </div>
 
     <!-- 9. WSOP Link Box -->
-    <div class="draggable-box" style="width: 250px; height: 100px; top: 800px; left: 1480px;">
+    <div class="draggable-box link-content" style="width: 250px; height: 100px; top: 250px; left: 900px;">
         <div class="resize-handle top-left" data-direction="tl"></div>
         <div class="resize-handle top-right" data-direction="tr"></div>
         <div class="resize-handle bottom-left" data-direction="bl"></div>
@@ -465,7 +482,7 @@
         <div class="box-content">
             <h3 style="margin: 0 0 5px 0; font-size: 1.2em; font-weight: 600;">wsop (poker)</h3>
             <p style="margin: 0; line-height: 1.3;">
-                <a href="https://www.playwsop.com/play" target="_blank" style="font-size: 1.1em; font-weight: 600;">click here to play wsop</a>
+                <a href="https://www.playwsop.com/play" target="_blank">click here to play wsop</a>
             </p>
         </div>
     </div>
@@ -474,7 +491,7 @@
     <script>
         // === AUTHENTICATION LOGIC ===
         const CORRECT_PASSWORD = 'bhagyamisawesome';
-        const UNLOCK_TIMEOUT_MS = 30000; // 30 seconds
+        const UNLOCK_TIMEOUT_MS = 10000; // Updated to 10 seconds
         let unlockTimeoutId = null;
 
         /**
@@ -535,7 +552,7 @@
         }
 
         /**
-         * Triggered by the 30-second timeout.
+         * Triggered by the 10-second timeout.
          */
         function autoUnlock() {
             const message = document.getElementById('auth-message');
@@ -553,8 +570,6 @@
 
         const draggableBoxes = document.querySelectorAll('.draggable-box');
         const resizeHandles = document.querySelectorAll('.resize-handle');
-        const dinoBox = document.getElementById('dino-box');
-        const maximizeDinoButton = document.getElementById('maximize-dino');
         
         let activeDraggableBox = null;
         let dragOffsetX, dragOffsetY;
@@ -562,8 +577,6 @@
         let activeBox = null;
         let activeHandle = null;
         let startX, startY, initialW, initialH, initialL, initialT;
-        let isDinoMaximized = false;
-        let dinoRestoreState = {};
         
         // Check if desktop features should be enabled (i.e., not mobile)
         const isDesktopView = () => window.innerWidth > 768;
@@ -581,10 +594,9 @@
             const handle = box.querySelector('.box-handle') || box;
             
             handle.addEventListener('mousedown', (e) => {
+                // Only allow drag on desktop view and if not resizing/interacting with inputs
                 if (!isDesktopView() || e.button !== 0 || e.target.closest('.resize-handle') || e.target.closest('.action-btn') || e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON' || document.body.classList.contains('blurred-content')) return;
                 
-                if (box.id === 'dino-box' && isDinoMaximized) return;
-
                 activeDraggableBox = box;
                 box.classList.add('dragging');
                 
@@ -606,8 +618,6 @@
             activeHandle = e.target;
             activeBox = activeHandle.closest('.draggable-box');
             
-            if (activeBox.id === 'dino-box' && isDinoMaximized) return;
-
             isResizing = true;
             activeBox.classList.add('dragging'); 
             
@@ -665,12 +675,6 @@
             activeBox.style.height = newH + 'px';
             activeBox.style.left = newL + 'px';
             activeBox.style.top = newT + 'px';
-
-            if (activeBox.id === 'dino-box') {
-                const content = activeBox.querySelector('.box-content');
-                // Adjust for handle height (35px)
-                if (content) content.style.height = (newH - 35) + 'px'; 
-            }
         }
 
         function endResize() {
@@ -716,41 +720,6 @@
         });
 
         document.body.oncontextmenu = (e) => { e.preventDefault(); };
-
-        // --- Dino Game Maximize Logic ---
-        if (maximizeDinoButton) {
-            maximizeDinoButton.addEventListener('click', toggleDinoMaximize);
-        }
-
-        function toggleDinoMaximize() {
-            if (!isDesktopView()) return; // Disable maximization on mobile
-
-            if (isDinoMaximized) {
-                dinoBox.classList.remove('maximized');
-                dinoBox.style.width = dinoRestoreState.width;
-                dinoBox.style.height = dinoRestoreState.height;
-                dinoBox.style.left = dinoRestoreState.left;
-                dinoBox.style.top = dinoRestoreState.top;
-                dinoBox.style.zIndex = dinoRestoreState.zIndex;
-                maximizeDinoButton.textContent = '[MAXIMIZE]';
-                dinoBox.style.pointerEvents = 'auto'; 
-            } else {
-                dinoRestoreState = {
-                    width: dinoBox.style.width,
-                    height: dinoBox.style.height,
-                    left: dinoBox.style.left,
-                    top: dinoBox.style.top,
-                    zIndex: dinoBox.style.zIndex
-                };
-
-                currentMaxZ = 999;
-                dinoBox.classList.add('maximized');
-                dinoBox.style.zIndex = currentMaxZ;
-                maximizeDinoButton.textContent = '[RESTORE]';
-                dinoBox.style.pointerEvents = 'all'; 
-            }
-            isDinoMaximized = !isDinoMaximized;
-        }
 
         // --- Calculator Logic ---
         let currentDisplay = '0';
@@ -858,6 +827,20 @@
                     element.innerHTML = `${city.label}: <strong>${timeString}</strong>`;
                 }
             });
+
+            // Update Mobile Header Time (Local Time in IST)
+            const mobileTimeDisplay = document.getElementById('mobile-time-display');
+            if (mobileTimeDisplay) {
+                const now = new Date();
+                const options = {
+                    timeZone: 'Asia/Kolkata', // Use primary time zone for header display
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false // 24-hour clock looks cleaner next to text
+                };
+                const timeString = now.toLocaleTimeString('en-US', options);
+                mobileTimeDisplay.textContent = `(${timeString} ist)`;
+            }
         }
 
         // --- Timer Logic ---
@@ -902,7 +885,7 @@
                     isTimerRunning = false;
                     timerStatus.textContent = 'time\'s up!';
                     timerDisplay.textContent = '00:00';
-                    // Tone.js implementation for sound alert is omitted here as per core guidelines but would go here.
+                    // Sound alert would go here
                 }
             }, 1000);
         }
@@ -928,7 +911,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const passwordInput = document.getElementById('password-input');
             
-            // 1. Start the 30-second automatic unlock timer
+            // 1. Start the 10-second automatic unlock timer
             unlockTimeoutId = setTimeout(autoUnlock, UNLOCK_TIMEOUT_MS);
             
             // 2. Setup Enter key listener
@@ -945,3 +928,4 @@
     </script>
 </body>
 </html>
+
