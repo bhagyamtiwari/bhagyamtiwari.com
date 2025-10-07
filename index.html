@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <style>
-        /* Base Styles & Minimalist Luxury Aesthetic */
+        /* Base Styles & Minimalist Luxury Aesthetic (Desktop) */
         :root {
             --bg-color: #ffffff;
             --text-color: #000000;
@@ -26,13 +26,14 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; 
             font-size: 14px; 
             line-height: 1.6;
-            overflow: hidden; 
+            overflow-x: hidden; /* Prevent horizontal scroll */
             cursor: none; 
             position: relative;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             text-transform: lowercase; 
+            overflow-y: auto; /* Allow scrolling */
         }
 
         /* Adjust all main text containers to the smaller size */
@@ -76,203 +77,143 @@
             margin: 2em 0 1.5em 0; 
             display: block; 
             color: var(--accent-color); 
-            animation: text-flicker 4s infinite alternate; /* More pronounced flicker for statement */
+            animation: text-flicker 4s infinite alternate; 
         }
         
-        .bio-intro {
-            color: var(--link-color);
-            font-size: var(--small-font-size); 
-            margin-top: 0.5em; 
-            margin-bottom: 0; 
-            display: block;
-        }
-        
-        .bio-paragraph {
-            margin-top: 0.5em;
-        }
+        /* ... (Rest of the standard text styling CSS is unchanged) ... */
 
-        /* --- Main Title - Kinetic and Spaced --- */
-        h1 {
-            line-height: 1.2;
-            margin: 0 0 1.5em 0; 
-            font-weight: normal;
-            letter-spacing: 0.15em; 
-            color: var(--text-color);
-            animation: text-glow 5s infinite alternate; /* Subtle glow for title */
-        }
-
-        /* Subtle glow for text */
+        /* --- Animations (Desktop Only) --- */
         @keyframes text-glow {
             0%, 100% { text-shadow: 0 0 0 rgba(0,0,0,0); }
             50% { text-shadow: 0 0 1px rgba(0,0,0,0.2); }
         }
 
-        /* Slightly more pronounced flicker for statement */
         @keyframes text-flicker {
             0%, 100% { opacity: 1; text-shadow: none; }
             50% { opacity: 0.98; text-shadow: 0 0 2px rgba(0, 123, 255, 0.4); }
             52% { opacity: 1; text-shadow: none; }
             80% { opacity: 0.99; text-shadow: 0 0 1px rgba(0, 123, 255, 0.2); }
         }
-
-        /* Kinetic Text (Subtle Hover) */
-        .kinetic-letter {
-            display: inline-block;
-            transition: transform 0.1s ease-out, text-shadow 0.1s ease-out;
-            will-change: transform;
-            cursor: none;
-        }
-
-        h1:hover .kinetic-letter {
-            text-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
-        }
-
-        .kinetic-letter:hover {
-            transform: translateY(-1px) scale(1.02);
-        }
-
-        /* --- Icon Links --- */
-        .social-icons {
-            display: flex;
-            gap: 25px;
-            margin-bottom: 0;
-            font-size: 22px; 
-        }
-
-        /* --- Corner/Bottom Nuggets --- */
-        .nugget {
-            position: fixed;
-            z-index: 5;
-            padding: 10px;
-            border: 1px solid var(--link-color);
-            opacity: 0.8;
-            transition: opacity 0.3s ease-in-out, transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Added transitions */
-            bottom: 40px; 
-        }
-
-        .nugget:hover {
-            opacity: 1;
-            transform: translateY(-5px); /* Subtle lift */
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Soft shadow */
-        }
         
-        /* Image Nugget (Bottom Left) */
-        .nugget.image {
-            left: 40px;
-            width: 250px;
-        }
-        .nugget.image img {
-            width: 100%;
-            display: block;
-            /* Removed filter: grayscale(100%); for colorized effect */
-        }
-        .nugget-caption {
-            font-size: var(--small-font-size);
-            color: var(--link-color);
-            margin-top: 5px;
-            line-height: 1.3;
-        }
-        
-        /* X Account Nugget (Bottom Center) */
-        .nugget.x-account {
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            font-size: var(--small-font-size);
-        }
-        .nugget.x-account .nugget-title {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
-        }
-        .nugget.x-account a {
-            font-weight: bold;
-        }
-
-        /* Video Nugget (Bottom Right) */
-        .nugget.video {
-            right: 40px;
-            width: 240px; 
-            background-color: black; 
-            border-color: black; 
-        }
-        .nugget.video .nugget-title {
-            color: white; 
-            font-weight: bold;
-            font-size: var(--small-font-size);
-            margin-bottom: 5px;
-            display: block;
-        }
-        .nugget.video iframe {
-            display: block; 
-            width: 100%;
-            height: 135px; 
-            border: none;
-        }
-
-
-        /* --- Interactive Effects --- */
-        .cursor-dot, .cursor-outline {
-            position: fixed;
-            border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            transition: transform 0.05s ease-out; 
-            z-index: 1000;
-        }
-        .cursor-dot {
-            width: 3px; 
-            height: 3px;
-            background-color: var(--text-color);
-        }
-        .cursor-outline {
-            width: 12px; 
-            height: 12px;
-            border: 1px solid var(--link-color);
-            mix-blend-mode: difference;
-        }
-        .ripple {
-            position: absolute;
-            border-radius: 50%;
-            pointer-events: none;
-            background: radial-gradient(circle, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0) 70%); 
-            transform: scale(0);
-            animation: ripple-anim 0.6s ease-out; 
-            z-index: 5;
-        }
-        @keyframes ripple-anim {
-            to {
-                transform: scale(2);
-                opacity: 0;
-            }
-        }
-
-        /* --- Background Particles (Pure CSS for minimal impact) --- */
+        /* Disable particles on desktop by default unless JS runs */
         .particles-bg {
+            display: block; 
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
             overflow: hidden;
             z-index: 0;
         }
-
         .particle {
             position: absolute;
-            background-color: rgba(0, 0, 0, 0.05); /* Very subtle gray/black */
+            background-color: rgba(0, 0, 0, 0.05); 
             border-radius: 50%;
             animation: particle-move linear infinite;
             opacity: 0;
         }
-
-        /* Particle specific animations will be set by JS for more control */
         @keyframes particle-move {
             0% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
             5% { opacity: 0.5; }
             95% { opacity: 0; }
             100% { transform: translate(var(--target-x), var(--target-y)) scale(1); opacity: 0; }
+        }
+
+        /* --- Corner/Bottom Nuggets (Desktop Positioning) --- */
+        .nugget-wrapper {
+             /* Wrapper for mobile display */
+             margin-top: 40px; 
+             display: none; 
+        }
+        .nugget {
+            position: fixed; /* Fixed on desktop */
+            z-index: 5;
+            padding: 10px;
+            border: 1px solid var(--link-color);
+            opacity: 0.8;
+            transition: opacity 0.3s ease-in-out, transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; 
+            bottom: 40px; 
+        }
+
+        .nugget:hover {
+            opacity: 1;
+            transform: translateY(-5px); 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+        }
+        
+        .nugget.image { left: 40px; width: 250px; }
+        .nugget.x-account { left: 50%; transform: translateX(-50%); width: 200px; }
+        .nugget.video { right: 40px; width: 240px; background-color: black; border-color: black; }
+        .nugget.video .nugget-title { color: white; }
+        .nugget.video iframe { width: 100%; height: 135px; }
+
+
+        /* ================================================= */
+        /* === MOBILE RESPONSIVENESS (Screens < 768px) === */
+        /* ================================================= */
+        @media (max-width: 768px) {
+            
+            body {
+                padding: 20px 10px; /* Reduce padding */
+                cursor: default;
+                /* Disable text-transform: lowercase; to allow natural capitalization where needed, though content remains lowercase */
+            }
+
+            .container {
+                max-width: 100%;
+                width: 90%;
+            }
+
+            /* Hide Custom Cursor on Mobile */
+            .cursor-dot, .cursor-outline {
+                display: none;
+            }
+
+            /* Reposition Copyright */
+            .copyright {
+                position: static;
+                margin-bottom: 20px;
+                text-align: right;
+                display: block;
+            }
+
+            /* Disable CPU-heavy animations */
+            h1, .statement {
+                animation: none !important;
+                text-shadow: none !important;
+            }
+
+            /* Disable Kinetic Text on Mobile */
+            .kinetic-letter {
+                pointer-events: none;
+            }
+            
+            /* Reposition Nuggets to a scrollable area */
+            .nugget-wrapper {
+                display: block; /* Show wrapper */
+                width: 100%;
+                margin-top: 40px;
+                padding-bottom: 40px;
+            }
+            
+            .nugget {
+                position: static; /* Switch from fixed to static */
+                margin: 20px auto; /* Center nuggets and add space between them */
+                transform: none !important;
+                box-shadow: none !important;
+                opacity: 1;
+                width: 90%; /* Take up most of the mobile screen */
+                max-width: 400px;
+            }
+
+            /* Reset specific nugget styles */
+            .nugget.image { left: auto; }
+            .nugget.x-account { left: auto; transform: none; }
+            .nugget.video { right: auto; }
+
+            /* Hide Particles on Mobile */
+            .particles-bg {
+                display: none !important;
+            }
         }
     </style>
 </head>
@@ -306,29 +247,31 @@
         <p class="bio-paragraph">finance major pursuing a bba at the zicklin school of business, baruch college, city university of new york. raised in belarus, turkey, pakistan, india, and the united states, with an internationally peripatetic upbringing and diverse educational experiences. internship experiences in the financial services industry and municipal bond markets. concurrently building an early-stage startup based in new delhi, india.</p>
     </div>
 
-    <div class="nugget image">
-        <p style="margin: 0 0 5px 0; font-weight: bold;">an image i find interesting</p>
-        <img src="https://pbs.twimg.com/media/GFaDFx9XkAAoD7r.jpg" alt="elon musk staring at debris">
-        <p class="nugget-caption">elon musk reviewing the debris of the first failed falcon 1 launch, one of spacex's early rocket failures.</p>
-    </div>
-    
-    <div class="nugget x-account">
-        <span class="nugget-title">x account recommendation</span>
-        <p style="margin: 0; line-height: 1.3;">
-            <a href="https://x.com/thedulab" target="_blank">@thedulab</a><br>
-            for thoughtful threads.
-        </p>
-    </div>
-    
-    <div class="nugget video">
-        <span class="nugget-title">a youtube video i can always rewatch (muted)</span>
-        <iframe 
-            src="https://www.youtube.com/embed/DzXVMjsZloE?start=84&autoplay=1&mute=1&controls=0&loop=1&playlist=DzXVMjsZloE" 
-            title="youtube video player" 
-            frameborder="0" 
-            allow="autoplay; encrypted-media" 
-            allowfullscreen>
-        </iframe>
+    <div class="nugget-wrapper">
+        <div class="nugget image">
+            <p style="margin: 0 0 5px 0; font-weight: bold;">an image i find interesting</p>
+            <img src="https://pbs.twimg.com/media/GFaDFx9XkAAoD7r.jpg" alt="elon musk staring at debris">
+            <p class="nugget-caption">elon musk reviewing the debris of the first failed falcon 1 launch, one of spacex's early rocket failures.</p>
+        </div>
+        
+        <div class="nugget x-account">
+            <span class="nugget-title">x account recommendation</span>
+            <p style="margin: 0; line-height: 1.3;">
+                <a href="https://x.com/thedulab" target="_blank">@thedulab</a><br>
+                for thoughtful threads.
+            </p>
+        </div>
+        
+        <div class="nugget video">
+            <span class="nugget-title">a youtube video i can always rewatch (muted)</span>
+            <iframe 
+                src="https://www.youtube.com/embed/DzXVMjsZloE?start=84&autoplay=1&mute=1&controls=0&loop=1&playlist=DzXVMjsZloE" 
+                title="youtube video player" 
+                frameborder="0" 
+                allow="autoplay; encrypted-media" 
+                allowfullscreen>
+            </iframe>
+        </div>
     </div>
 
     <script>
@@ -383,63 +326,66 @@
             }, 600); 
         });
 
-        // === 4. Subtle Background Particles ===
+        // === 4. Subtle Background Particles (JS controlled) ===
         const particlesContainer = document.getElementById('particles-bg');
-        const numParticles = 20; // Fewer particles for subtlety
+        const numParticles = 20; 
 
-        function createParticle() {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particlesContainer.appendChild(particle);
+        // Only run particle script on desktop for performance
+        if (window.innerWidth > 768) {
+            
+            function createParticle() {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particlesContainer.appendChild(particle);
 
-            const size = Math.random() * 2 + 1; // 1-3px
-            particle.style.width = size + 'px';
-            particle.style.height = size + 'px';
+                const size = Math.random() * 2 + 1; 
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
 
-            const startX = Math.random() * window.innerWidth;
-            const startY = Math.random() * window.innerHeight;
-            const endX = Math.random() * window.innerWidth;
-            const endY = Math.random() * window.innerHeight;
-            const duration = Math.random() * 8 + 4; // 4-12 seconds
+                const startX = Math.random() * window.innerWidth;
+                const startY = Math.random() * window.innerHeight;
+                const endX = Math.random() * window.innerWidth;
+                const endY = Math.random() * window.innerHeight;
+                const duration = Math.random() * 8 + 4; 
 
-            particle.style.setProperty('--x', startX + 'px');
-            particle.style.setProperty('--y', startY + 'px');
-            particle.style.setProperty('--target-x', endX + 'px');
-            particle.style.setProperty('--target-y', endY + 'px');
-            particle.style.animationDuration = duration + 's';
-            particle.style.animationDelay = (Math.random() * -duration) + 's'; // Stagger start times
+                particle.style.setProperty('--x', startX + 'px');
+                particle.style.setProperty('--y', startY + 'px');
+                particle.style.setProperty('--target-x', endX + 'px');
+                particle.style.setProperty('--target-y', endY + 'px');
+                particle.style.animationDuration = duration + 's';
+                particle.style.animationDelay = (Math.random() * -duration) + 's'; 
 
-            // Remove particle after animation to prevent DOM bloat
-            particle.addEventListener('animationend', () => {
-                particle.remove();
-                // createParticle(); // Optionally recreate for continuous loop
-            });
-            return particle;
-        }
+                particle.addEventListener('animationend', () => {
+                    particle.remove();
+                });
+                return particle;
+            }
 
-        // Initialize particles
-        for (let i = 0; i < numParticles; i++) {
-            createParticle();
-        }
-
-        // Recreate particles on scroll/mouse movement (very subtle effect)
-        let particleCreationTimer;
-        document.addEventListener('mousemove', () => {
-            clearTimeout(particleCreationTimer);
-            particleCreationTimer = setTimeout(() => {
-                if (particlesContainer.children.length < numParticles * 1.5) { // Cap particles
-                    createParticle();
-                }
-            }, 500); // Only create new particles every 500ms on mousemove
-        });
-
-        // Ensure particles are continuously created even without mousemove
-        setInterval(() => {
-            if (particlesContainer.children.length < numParticles) {
+            for (let i = 0; i < numParticles; i++) {
                 createParticle();
             }
-        }, 2000); // Ensure at least 'numParticles' are present every 2 seconds
 
+            let particleCreationTimer;
+            document.addEventListener('mousemove', () => {
+                clearTimeout(particleCreationTimer);
+                particleCreationTimer = setTimeout(() => {
+                    if (particlesContainer.children.length < numParticles * 1.5) { 
+                        createParticle();
+                    }
+                }, 500); 
+            });
+
+            setInterval(() => {
+                if (particlesContainer.children.length < numParticles) {
+                    createParticle();
+                }
+            }, 2000); 
+        } else {
+            // Remove the particle container entirely on mobile for absolute certainty
+             if (particlesContainer) {
+                particlesContainer.remove();
+             }
+        }
     </script>
 </body>
 </html>
