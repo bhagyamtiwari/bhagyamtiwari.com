@@ -26,17 +26,17 @@
             min-height: 100vh;
             background-color: var(--bg-color);
             color: var(--text-color);
-            /* Modern, clean sans-serif font */
             font-family: 'Inter', sans-serif; 
             font-size: 14px;
             line-height: 1.6;
-            overflow: hidden; /* Important for the desktop metaphor */
+            overflow: hidden; 
             cursor: default; 
             position: relative;
             display: flex;
-            justify-content: center;
+            flex-wrap: wrap; /* Allows wrapping on desktop if needed, but flex-start is controlled by JS positioning */
+            justify-content: flex-start;
             align-items: flex-start;
-            text-transform: lowercase; /* Keeping the lowercase aesthetic */
+            text-transform: lowercase; 
             user-select: none;
         }
 
@@ -53,8 +53,8 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-color: rgba(255, 255, 255, 0.95); /* Semi-transparent white background */
-            z-index: 1000; /* Above all other content */
+            background-color: rgba(255, 255, 255, 0.95); 
+            z-index: 1000; 
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -71,8 +71,7 @@
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             text-align: center;
-            /* Animation for incorrect password */
-            animation: none; 
+            min-width: 280px;
         }
         
         @keyframes shake {
@@ -83,9 +82,6 @@
         
         .shake {
             animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
-            transform: translate3d(0, 0, 0);
-            backface-visibility: hidden;
-            perspective: 1000px;
             border-color: red !important;
         }
 
@@ -95,9 +91,10 @@
             border-radius: 6px;
             margin: 15px 0;
             font-size: 1.1em;
-            width: 250px;
+            width: 80%; /* Responsive width */
+            max-width: 250px;
             text-align: center;
-            text-transform: none; /* Allow normal casing for input */
+            text-transform: none; 
         }
         #unlock-btn {
             padding: 10px 20px;
@@ -112,34 +109,8 @@
         #unlock-btn:hover {
             background: var(--accent-color);
         }
-
-        /* --- END BLUR EFFECT STYLES --- */
-
-        a {
-            color: var(--link-color);
-            text-decoration: none;
-            transition: color 0.2s ease-in-out;
-            cursor: pointer;
-        }
-
-        a:hover {
-            color: var(--accent-color); 
-        }
         
-        .social-icons {
-            margin: 15px 0 25px 0;
-        }
-        .social-icons a i {
-            font-size: 1.8em; 
-            margin: 0 12px 0 0; /* Align left */
-            color: var(--text-color);
-            transition: color 0.2s ease-in-out;
-        }
-        .social-icons a:hover i {
-            color: var(--link-color);
-        }
-
-        /* --- Main Layout & Draggable Boxes --- */
+        /* --- DESKTOP/DRAGGABLE BOX STYLES (Default for >768px) --- */
         .draggable-box {
             position: absolute;
             z-index: 10; 
@@ -152,100 +123,81 @@
             cursor: grab;
             min-width: 150px;
             min-height: 100px;
-            overflow: hidden; /* Hide content overflow during resize */
-        }
-        
-        #main-container {
-            width: 450px;
-            height: 350px;
+            overflow: hidden; 
         }
 
-        .draggable-box.dragging {
-            cursor: grabbing;
-            opacity: 0.95;
-            box-shadow: 0 0 20px rgba(0, 123, 255, 0.3); /* Blue shadow when dragging */
-        }
-        
-        /* --- RESIZE HANDLES --- */
-        .resize-handle {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: var(--bg-color);
-            border: 1px solid var(--link-color);
-            border-radius: 3px;
-            z-index: 100; 
-            opacity: 0.7;
-            transition: opacity 0.1s;
-        }
-
-        .resize-handle:hover {
-            opacity: 1;
-        }
-
-        /* Handle positioning and cursors */
-        .top-left { top: -5px; left: -5px; cursor: nwse-resize; }
-        .top-right { top: -5px; right: -5px; cursor: nesw-resize; }
-        .bottom-left { bottom: -5px; left: -5px; cursor: nesw-resize; }
-        .bottom-right { bottom: -5px; right: -5px; cursor: nwse-resize; }
-        
-        /* Box Handle/Title - SMALLER FONT HERE */
         .box-handle {
             font-weight: 600; display: flex; justify-content: space-between; align-items: center; 
             border-bottom: 1px solid var(--border-color);
-            margin: -15px -15px 10px -15px; /* Adjust padding removal */
+            margin: -15px -15px 10px -15px;
             padding: 8px 15px; 
             color: var(--link-color); 
-            font-size: 0.75em; /* Reduced size */
+            font-size: 0.75em; 
             text-transform: uppercase;
             cursor: grab;
         }
-        .box-handle .action-btn {
-            background: var(--link-color); border: none; color: white; 
-            font-size: 0.7em; padding: 2px 7px; border-radius: 4px; cursor: pointer; 
-            transition: background 0.2s, opacity 0.2s;
-        }
-        .box-handle .action-btn:hover {
-            background: var(--accent-color);
-        }
-
+        
         .box-content {
-            height: calc(100% - 30px); /* Adjust height for handle */
+            height: calc(100% - 30px);
             overflow: auto;
-            padding-right: 5px; /* Space for scrollbar */
+            padding-right: 5px; 
         }
-        .box-content iframe {
-            display: block; width: 100%; height: 100%; border: none; background-color: var(--box-bg);
-        }
+        
+        .resize-handle { display: block; } /* Visible on desktop */
+        
+        /* Dino Box Specifics */
+        .dino-box { padding: 0; background: black;}
+        .dino-box .box-content { height: calc(100% - 35px); padding: 0;}
+        .dino-box .box-handle { margin: 0; height: 35px; background-color: var(--box-bg); border-radius: 8px 8px 0 0;}
 
-        /* Dino Box Specifics (for maximization) */
-        .dino-box { 
-            width: 500px; 
-            height: 350px; 
-            padding: 0; 
-            background: black;
+        /* --- MOBILE OVERRIDES (For screens <= 768px) --- */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                overflow-y: auto; /* Enable scrolling on mobile */
+                overflow-x: hidden;
+                display: block; /* Switch to block flow */
+            }
+            
+            .draggable-box {
+                position: static !important; /* Disable absolute positioning */
+                width: 100% !important; /* Full width */
+                min-width: unset !important;
+                max-width: unset !important;
+                height: auto !important; /* Auto height for stacking */
+                min-height: unset !important;
+                margin-bottom: 15px; /* Space between stacked boxes */
+                left: unset !important;
+                top: unset !important;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+                cursor: default !important;
+            }
+            
+            .resize-handle, #maximize-dino {
+                display: none !important; /* Hide resize handles and maximize button */
+            }
+            
+            .box-handle {
+                cursor: default !important;
+                margin: -15px -15px 10px -15px; /* Restore standard margins */
+            }
+            
+            .box-content {
+                height: auto !important;
+                overflow: visible !important;
+                padding-right: 0;
+            }
+
+            /* Fix embedded content heights on mobile */
+            .dino-box {
+                height: 300px !important; /* Fixed height for embedded game */
+            }
+            .dino-box .box-content {
+                height: 100% !important;
+            }
         }
-        .dino-box .box-content { 
-            height: calc(100% - 35px); /* Adjusted for handle height */
-            padding: 0;
-        }
-        .dino-box .box-handle { 
-            margin: 0; 
-            height: 35px; 
-            background-color: var(--box-bg);
-            border-radius: 8px 8px 0 0;
-            cursor: grab;
-        }
-        .dino-box.maximized {
-            width: 98vw !important; 
-            height: 98vh !important;
-            top: 1vh !important;
-            left: 1vw !important;
-            border: 2px solid var(--link-color);
-            box-shadow: 0 0 25px rgba(0, 123, 255, 0.5); 
-            z-index: 999;
-        }
-        /* Calculator Styles */
+        
+        /* Other component styles (Calculator, Clocks, etc.) */
         #calculator-ui {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -273,87 +225,16 @@
             cursor: pointer;
             transition: background 0.1s;
         }
-        .calc-btn:hover {
-            background: #d0d0d0;
-        }
-        .calc-op { background: #b0d8ff; color: var(--text-color); }
+        .calc-op { background: #b0d8ff; }
         .calc-eq { background: var(--accent-color); color: white; grid-column: span 2; }
         .calc-clear { background: #ffaaaa; }
 
-        /* Streaming Links */
-        .streaming-links {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .streaming-links a {
-            padding: 8px;
-            background: var(--link-color);
-            color: white;
-            border-radius: 4px;
-            text-align: center;
-            font-weight: 600;
-            transition: background 0.2s;
-        }
-        .streaming-links a:hover {
-            background: var(--accent-color);
-        }
-
-        /* Clock styles */
-        .clock-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .clock-item {
-            font-size: 1.05em;
-            font-weight: 400;
-            padding: 4px 0;
-            border-bottom: 1px dashed #eee;
-        }
-        
-        /* Timer Styles */
-        .timer-display {
-            font-size: 2.5em;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 10px;
-            color: var(--link-color);
-        }
-        .timer-controls {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
-        .timer-controls button {
-            padding: 8px 15px;
-            border-radius: 4px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background 0.2s;
-        }
-        .timer-controls button:hover {
-            opacity: 0.8;
-        }
-        .timer-input-group {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        .timer-input-group input {
-            width: 60px;
-            padding: 8px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            text-align: center;
-            font-size: 1em;
-        }
+        .clock-list, .streaming-links { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+        .clock-item { font-size: 1.05em; font-weight: 400; padding: 4px 0; border-bottom: 1px dashed #eee; }
+        .streaming-links a { padding: 8px; background: var(--link-color); color: white; border-radius: 4px; text-align: center; font-weight: 600; }
+        .timer-display { font-size: 2.5em; font-weight: 700; text-align: center; margin-bottom: 10px; color: var(--link-color); }
+        .timer-controls { display: flex; gap: 10px; justify-content: center; margin-bottom: 10px; }
+        .timer-controls button { padding: 8px 15px; border-radius: 4px; border: none; cursor: pointer; font-weight: 600; }
 
     </style>
 </head>
@@ -377,7 +258,7 @@
     <div id="auth-overlay">
         <div id="auth-box">
             <h2 style="font-size: 1.5em; margin-bottom: 5px; color: var(--text-color);">access restricted</h2>
-            <p style="color: #666; margin-bottom: 10px;">enter the secret phrase to unlock the desktop.</p>
+            <p style="color: #666; margin-bottom: 10px;">enter the secret phrase to unlock the desktop, or wait 30 seconds for automatic access.</p>
             <input type="password" id="password-input" placeholder="secret phrase">
             <button id="unlock-btn" onclick="checkPassword()">unlock desktop</button>
             <p id="auth-message" style="color: red; margin-top: 10px; font-size: 0.9em;"></p>
@@ -385,12 +266,12 @@
     </div>
     
     <!-- --- MAIN CONTENT CONTAINER --- -->
-    <div class="draggable-box" id="main-container" style="top: 50px; left: 50px;">
+    <div class="draggable-box" id="main-container" style="width: 450px; height: 350px; top: 50px; left: 50px;">
         <div class="resize-handle top-left" data-direction="tl"></div>
         <div class="resize-handle top-right" data-direction="tr"></div>
         <div class="resize-handle bottom-left" data-direction="bl"></div>
         <div class="resize-handle bottom-right" data-direction="br"></div>
-        <div class="box-handle" style="cursor: grab;"><span>/bhagyam_tiwari/profile.txt</span></div>
+        <div class="box-handle"><span>/bhagyam_tiwari/profile.txt</span></div>
         
         <div class="box-content">
             <h1 id="main-title" style="font-size: 2.2em; margin: 0 0 10px 0; color: var(--text-color); font-weight: 700;">bhagyam tiwari</h1>
@@ -422,7 +303,7 @@
         <div class="resize-handle top-right" data-direction="tr"></div>
         <div class="resize-handle bottom-left" data-direction="bl"></div>
         <div class="resize-handle bottom-right" data-direction="br"></div>
-        <div class="box-handle" style="cursor: grab;"><span>/applications/calc.exe</span></div>
+        <div class="box-handle"><span>/applications/calc.exe</span></div>
         <div class="box-content">
             <div id="calculator-ui">
                 <div id="calc-display">0</div>
@@ -458,7 +339,7 @@
         <div class="resize-handle top-right" data-direction="tr"></div>
         <div class="resize-handle bottom-left" data-direction="bl"></div>
         <div class="resize-handle bottom-right" data-direction="br"></div>
-        <div class="box-handle" style="cursor: grab;"><span>/time_temp/global_time.dat</span></div>
+        <div class="box-handle"><span>/time_temp/global_time.dat</span></div>
         <div class="box-content">
             <h3 style="margin: 0 0 10px 0; font-size: 1.2em; font-weight: 600;">global time status</h3>
             <ul class="clock-list" id="clock-container">
@@ -478,7 +359,7 @@
         <div class="resize-handle top-right" data-direction="tr"></div>
         <div class="resize-handle bottom-left" data-direction="bl"></div>
         <div class="resize-handle bottom-right" data-direction="br"></div>
-        <div class="box-handle" style="cursor: grab;"><span>/applications/timer.app</span></div>
+        <div class="box-handle"><span>/applications/timer.app</span></div>
         <div class="box-content">
             <h3 style="margin: 0 0 10px 0; font-size: 1.2em; font-weight: 600;">countdown timer</h3>
             <div class="timer-display" id="timer-display">00:00</div>
@@ -511,15 +392,14 @@
         </div>
     </div>
 
-    <!-- 5. Sudoku Embed Box (Increased Size for better usability) -->
+    <!-- 5. Sudoku Embed Box -->
     <div class="draggable-box" style="width: 750px; height: 700px; top: 50px; left: 900px; padding: 0;">
         <div class="resize-handle top-left" data-direction="tl"></div>
         <div class="resize-handle top-right" data-direction="tr"></div>
         <div class="resize-handle bottom-left" data-direction="bl"></div>
         <div class="resize-handle bottom-right" data-direction="br"></div>
-        <div class="box-handle" style="cursor: grab; margin: 0; border-radius: 8px 8px 0 0;"><span>/games/daily_sudoku.web</span></div>
+        <div class="box-handle" style="margin: 0; border-radius: 8px 8px 0 0;"><span>/games/daily_sudoku.web</span></div>
         <div class="box-content" style="height: calc(100% - 35px); padding: 0;">
-            <!-- Using an external daily sudoku embed -->
             <iframe src="https://sudoku.com/embed/daily/?theme=light" title="Daily Sudoku" frameborder="0" scrolling="no" allowfullscreen></iframe>
         </div>
     </div>
@@ -530,7 +410,7 @@
         <div class="resize-handle top-right" data-direction="tr"></div>
         <div class="resize-handle bottom-left" data-direction="bl"></div>
         <div class="resize-handle bottom-right" data-direction="br"></div>
-        <div class="box-handle" style="cursor: grab;"><span>/links/streaming.url</span></div>
+        <div class="box-handle"><span>/links/streaming.url</span></div>
         <div class="box-content">
             <h3 style="margin: 0 0 10px 0; font-size: 1.2em; font-weight: 600;">streaming services</h3>
             <div class="streaming-links">
@@ -548,7 +428,7 @@
         <div class="resize-handle top-right" data-direction="tr"></div>
         <div class="resize-handle bottom-left" data-direction="bl"></div>
         <div class="resize-handle bottom-right" data-direction="br"></div>
-        <div class="box-handle" style="cursor: grab;"><span>/info/fact_of_day.txt</span></div>
+        <div class="box-handle"><span>/info/fact_of_day.txt</span></div>
         <div class="box-content">
             <div class="flex items-center mb-2">
                 <i class="material-icons text-xl mr-2 text-red-500">lightbulb_outline</i>
@@ -575,7 +455,7 @@
         </div>
     </div>
 
-    <!-- 9. WSOP Link Box (New Link) -->
+    <!-- 9. WSOP Link Box -->
     <div class="draggable-box" style="width: 250px; height: 100px; top: 800px; left: 1480px;">
         <div class="resize-handle top-left" data-direction="tl"></div>
         <div class="resize-handle top-right" data-direction="tr"></div>
@@ -593,70 +473,82 @@
 
     <script>
         // === AUTHENTICATION LOGIC ===
-        // The password has been set to the requested value.
         const CORRECT_PASSWORD = 'bhagyamisawesome';
+        const UNLOCK_TIMEOUT_MS = 30000; // 30 seconds
+        let unlockTimeoutId = null;
 
+        /**
+         * Performs the actual desktop unlock sequence.
+         */
+        function performUnlock() {
+            // Only proceed if the blur is active
+            const body = document.body;
+            if (!body.classList.contains('blurred-content')) return;
+
+            const overlay = document.getElementById('auth-overlay');
+            
+            // 1. Crucially clear the timeout if it was set
+            if (unlockTimeoutId) {
+                clearTimeout(unlockTimeoutId);
+                unlockTimeoutId = null;
+            }
+            
+            // 2. Remove blur immediately
+            body.classList.remove('blurred-content'); 
+            
+            // 3. Fade out the overlay
+            overlay.style.opacity = '0';
+            
+            // 4. Clean up the overlay and start desktop functions after fade
+            setTimeout(() => {
+                overlay.remove();
+                // Re-enable pointer events for the body content
+                body.style.pointerEvents = 'auto'; 
+                // Set initial Z-index and start clocks once unlocked
+                setInitialZIndex();
+                updateClocks();
+                setInterval(updateClocks, 1000);
+            }, 800); 
+        }
+
+        /**
+         * Triggered if the password is correct.
+         */
         function checkPassword() {
             const input = document.getElementById('password-input').value.toLowerCase().trim();
             const message = document.getElementById('auth-message');
-            const body = document.body;
-            const overlay = document.getElementById('auth-overlay');
             const authBox = document.getElementById('auth-box');
-
-            console.log('Attempting password check. Input:', input); // Debug log
 
             // Reset error state
             message.textContent = '';
             authBox.classList.remove('shake');
 
-
             if (input === CORRECT_PASSWORD) {
-                console.log('Password correct. Unlocking desktop.'); // Debug log
-                
-                // 1. Remove blur immediately
-                body.classList.remove('blurred-content'); 
-                
-                // 2. Fade out the overlay
-                overlay.style.opacity = '0';
-                
-                // 3. Clean up the overlay and start desktop functions after fade
-                setTimeout(() => {
-                    overlay.remove();
-                    // Re-enable pointer events for the body content
-                    body.style.pointerEvents = 'auto'; 
-                    // Set initial Z-index and start clocks once unlocked
-                    setInitialZIndex();
-                    updateClocks();
-                    setInterval(updateClocks, 1000);
-                }, 800); 
+                message.textContent = 'access granted.';
+                performUnlock();
             } else {
                 // Incorrect password: Show error and shake box
                 message.textContent = 'incorrect secret phrase. try again.';
                 authBox.classList.add('shake');
                 document.getElementById('password-input').value = ''; // Clear input
-                console.warn('Password incorrect:', input); // Debug log
             }
         }
 
-        // Add event listener for Enter key on password field
-        document.addEventListener('DOMContentLoaded', () => {
-            const passwordInput = document.getElementById('password-input');
-            if (passwordInput) {
-                passwordInput.focus();
-                passwordInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        checkPassword();
-                    }
-                });
-            }
-        });
+        /**
+         * Triggered by the 30-second timeout.
+         */
+        function autoUnlock() {
+            const message = document.getElementById('auth-message');
+            message.textContent = 'unlocked automatically...';
+            performUnlock();
+        }
 
         // ===================================
-        // === CORE DESKTOP LOGIC (Runs after unlock) ===
+        // === DESKTOP INITIALIZATION & DRAG/RESIZE LOGIC ===
         // ===================================
 
         const MIN_SIZE = 150; 
-        const MIN_Z_INDEX = 10;
+        const MIN_Z_INDEX = 10; 
         let currentMaxZ = MIN_Z_INDEX; 
 
         const draggableBoxes = document.querySelectorAll('.draggable-box');
@@ -664,28 +556,17 @@
         const dinoBox = document.getElementById('dino-box');
         const maximizeDinoButton = document.getElementById('maximize-dino');
         
-        // Dragging State
         let activeDraggableBox = null;
         let dragOffsetX, dragOffsetY;
-
-        // Resizing State
         let isResizing = false;
         let activeBox = null;
         let activeHandle = null;
         let startX, startY, initialW, initialH, initialL, initialT;
-
-        // Dino State
         let isDinoMaximized = false;
         let dinoRestoreState = {};
-
-        // Timer State
-        let timerInterval = null;
-        let timeRemaining = 0;
-        let isTimerRunning = false;
-        const timerDisplay = document.getElementById('timer-display');
-        const minutesInput = document.getElementById('minutes-input');
-        const secondsInput = document.getElementById('seconds-input');
-        const timerStatus = document.getElementById('timer-status');
+        
+        // Check if desktop features should be enabled (i.e., not mobile)
+        const isDesktopView = () => window.innerWidth > 768;
 
 
         function setInitialZIndex() {
@@ -700,7 +581,7 @@
             const handle = box.querySelector('.box-handle') || box;
             
             handle.addEventListener('mousedown', (e) => {
-                if (e.button !== 0 || e.target.closest('.resize-handle') || e.target.closest('.action-btn') || e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON' || document.body.classList.contains('blurred-content')) return;
+                if (!isDesktopView() || e.button !== 0 || e.target.closest('.resize-handle') || e.target.closest('.action-btn') || e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON' || document.body.classList.contains('blurred-content')) return;
                 
                 if (box.id === 'dino-box' && isDinoMaximized) return;
 
@@ -720,7 +601,7 @@
 
         // --- RESIZING LOGIC ---
         function startResize(e) {
-            if (e.button !== 0 || activeDraggableBox || document.body.classList.contains('blurred-content')) return; 
+            if (!isDesktopView() || e.button !== 0 || activeDraggableBox || document.body.classList.contains('blurred-content')) return; 
 
             activeHandle = e.target;
             activeBox = activeHandle.closest('.draggable-box');
@@ -787,7 +668,8 @@
 
             if (activeBox.id === 'dino-box') {
                 const content = activeBox.querySelector('.box-content');
-                if (content) content.style.height = (newH - 35) + 'px';
+                // Adjust for handle height (35px)
+                if (content) content.style.height = (newH - 35) + 'px'; 
             }
         }
 
@@ -841,6 +723,8 @@
         }
 
         function toggleDinoMaximize() {
+            if (!isDesktopView()) return; // Disable maximization on mobile
+
             if (isDinoMaximized) {
                 dinoBox.classList.remove('maximized');
                 dinoBox.style.width = dinoRestoreState.width;
@@ -848,7 +732,7 @@
                 dinoBox.style.left = dinoRestoreState.left;
                 dinoBox.style.top = dinoRestoreState.top;
                 dinoBox.style.zIndex = dinoRestoreState.zIndex;
-                maximizeDinoButton.textContent = '[RESTORE]';
+                maximizeDinoButton.textContent = '[MAXIMIZE]';
                 dinoBox.style.pointerEvents = 'auto'; 
             } else {
                 dinoRestoreState = {
@@ -867,7 +751,6 @@
             }
             isDinoMaximized = !isDinoMaximized;
         }
-
 
         // --- Calculator Logic ---
         let currentDisplay = '0';
@@ -978,6 +861,14 @@
         }
 
         // --- Timer Logic ---
+        let timerInterval = null;
+        let timeRemaining = 0;
+        let isTimerRunning = false;
+        const timerDisplay = document.getElementById('timer-display');
+        const minutesInput = document.getElementById('minutes-input');
+        const secondsInput = document.getElementById('seconds-input');
+        const timerStatus = document.getElementById('timer-status');
+
         function formatTime(totalSeconds) {
             const minutes = Math.floor(totalSeconds / 60);
             const seconds = totalSeconds % 60;
@@ -1011,6 +902,7 @@
                     isTimerRunning = false;
                     timerStatus.textContent = 'time\'s up!';
                     timerDisplay.textContent = '00:00';
+                    // Tone.js implementation for sound alert is omitted here as per core guidelines but would go here.
                 }
             }, 1000);
         }
@@ -1031,6 +923,24 @@
             secondsInput.value = '0';
             timerStatus.textContent = 'set duration and click start.';
         }
+
+        // --- DOM Ready / Initial Setup ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const passwordInput = document.getElementById('password-input');
+            
+            // 1. Start the 30-second automatic unlock timer
+            unlockTimeoutId = setTimeout(autoUnlock, UNLOCK_TIMEOUT_MS);
+            
+            // 2. Setup Enter key listener
+            if (passwordInput) {
+                passwordInput.focus();
+                passwordInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        checkPassword();
+                    }
+                });
+            }
+        });
 
     </script>
 </body>
