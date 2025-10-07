@@ -3,442 +3,1034 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>bhagyam tiwari</title>
+    <title>bhagyam tiwari - Portfolio</title>
     
+    <!-- Load Inter Font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <style>
-        /* Base Styles & Minimalist Luxury Aesthetic */
+        /* Base Styles: Clean, Light Theme */
         :root {
             --bg-color: #ffffff;
-            --text-color: #000000;
-            --link-color: #666666; 
-            --accent-color: #007bff; 
-            --small-font-size: 0.8em; 
+            --text-color: #1a1a1a; /* Dark text */
+            --link-color: #007bff; /* Primary blue for links */
+            --accent-color: #4CAF50; /* Green accent */
+            --border-color: #dddddd;
+            --box-bg: #f8f8f8; /* Very light grey box background */
         }
 
         body {
             margin: 0;
-            padding: 40px;
+            padding: 20px;
             min-height: 100vh;
             background-color: var(--bg-color);
             color: var(--text-color);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; 
-            font-size: 14px; 
+            /* Modern, clean sans-serif font */
+            font-family: 'Inter', sans-serif; 
+            font-size: 14px;
             line-height: 1.6;
-            overflow: hidden; 
-            cursor: none; 
+            overflow: hidden; /* Important for the desktop metaphor */
+            cursor: default; 
             position: relative;
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            text-transform: lowercase; 
+            text-transform: lowercase; /* Keeping the lowercase aesthetic */
+            user-select: none;
         }
 
-        /* Adjust all main text containers to the smaller size */
-        .container p, .container .bio-intro, .container .statement, h1 {
-            font-size: var(--small-font-size);
+        /* --- BLUR EFFECT & OVERLAY STYLES --- */
+        .blurred-content {
+            filter: blur(5px);
+            transition: filter 0.8s ease-in-out;
+            pointer-events: none; /* Disable interaction when blurred */
         }
+        
+        #auth-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.95); /* Semi-transparent white background */
+            z-index: 1000; /* Above all other content */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Inter', sans-serif;
+            text-transform: lowercase;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        #auth-box {
+            padding: 30px;
+            background: var(--box-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            /* Animation for incorrect password */
+            animation: none; 
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+            transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+            border-color: red !important;
+        }
+
+        #password-input {
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            margin: 15px 0;
+            font-size: 1.1em;
+            width: 250px;
+            text-align: center;
+            text-transform: none; /* Allow normal casing for input */
+        }
+        #unlock-btn {
+            padding: 10px 20px;
+            background: var(--link-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: background 0.2s;
+        }
+        #unlock-btn:hover {
+            background: var(--accent-color);
+        }
+
+        /* --- END BLUR EFFECT STYLES --- */
 
         a {
             color: var(--link-color);
             text-decoration: none;
             transition: color 0.2s ease-in-out;
-            cursor: none !important;
+            cursor: pointer;
         }
 
         a:hover {
-            color: var(--text-color); 
-        }
-
-        /* --- Layout --- */
-        .container {
-            max-width: 650px; 
-            width: 100%;
-            position: relative;
-            z-index: 10;
-        }
-
-        /* --- Copyright --- */
-        .copyright {
-            position: fixed;
-            top: 40px;
-            right: 40px;
-            font-size: 0.8em;
-            color: var(--link-color);
-            z-index: 10;
-        }
-
-        /* --- Statements and Bio --- */
-        .statement {
-            font-weight: bold;
-            letter-spacing: 0.02em;
-            margin: 2em 0 1.5em 0; 
-            display: block; 
             color: var(--accent-color); 
-            animation: text-flicker 4s infinite alternate; /* More pronounced flicker for statement */
         }
         
-        .bio-intro {
-            color: var(--link-color);
-            font-size: var(--small-font-size); 
-            margin-top: 0.5em; 
-            margin-bottom: 0; 
-            display: block;
-        }
-        
-        .bio-paragraph {
-            margin-top: 0.5em;
-        }
-
-        /* --- Main Title - Kinetic and Spaced --- */
-        h1 {
-            line-height: 1.2;
-            margin: 0 0 1.5em 0; 
-            font-weight: normal;
-            letter-spacing: 0.15em; 
-            color: var(--text-color);
-            animation: text-glow 5s infinite alternate; /* Subtle glow for title */
-        }
-
-        /* Subtle glow for text */
-        @keyframes text-glow {
-            0%, 100% { text-shadow: 0 0 0 rgba(0,0,0,0); }
-            50% { text-shadow: 0 0 1px rgba(0,0,0,0.2); }
-        }
-
-        /* Slightly more pronounced flicker for statement */
-        @keyframes text-flicker {
-            0%, 100% { opacity: 1; text-shadow: none; }
-            50% { opacity: 0.98; text-shadow: 0 0 2px rgba(0, 123, 255, 0.4); }
-            52% { opacity: 1; text-shadow: none; }
-            80% { opacity: 0.99; text-shadow: 0 0 1px rgba(0, 123, 255, 0.2); }
-        }
-
-        /* Kinetic Text (Subtle Hover) */
-        .kinetic-letter {
-            display: inline-block;
-            transition: transform 0.1s ease-out, text-shadow 0.1s ease-out;
-            will-change: transform;
-            cursor: none;
-        }
-
-        h1:hover .kinetic-letter {
-            text-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
-        }
-
-        .kinetic-letter:hover {
-            transform: translateY(-1px) scale(1.02);
-        }
-
-        /* --- Icon Links --- */
         .social-icons {
-            display: flex;
-            gap: 25px;
-            margin-bottom: 0;
-            font-size: 22px; 
+            margin: 15px 0 25px 0;
         }
-
-        /* --- Corner/Bottom Nuggets --- */
-        .nugget {
-            position: fixed;
-            z-index: 5;
-            padding: 10px;
-            border: 1px solid var(--link-color);
-            opacity: 0.8;
-            transition: opacity 0.3s ease-in-out, transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Added transitions */
-            bottom: 40px; 
+        .social-icons a i {
+            font-size: 1.8em; 
+            margin: 0 12px 0 0; /* Align left */
+            color: var(--text-color);
+            transition: color 0.2s ease-in-out;
         }
-
-        .nugget:hover {
-            opacity: 1;
-            transform: translateY(-5px); /* Subtle lift */
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Soft shadow */
-        }
-        
-        /* Image Nugget (Bottom Left) */
-        .nugget.image {
-            left: 40px;
-            width: 250px;
-        }
-        .nugget.image img {
-            width: 100%;
-            display: block;
-            /* Removed filter: grayscale(100%); for colorized effect */
-        }
-        .nugget-caption {
-            font-size: var(--small-font-size);
+        .social-icons a:hover i {
             color: var(--link-color);
-            margin-top: 5px;
-            line-height: 1.3;
+        }
+
+        /* --- Main Layout & Draggable Boxes --- */
+        .draggable-box {
+            position: absolute;
+            z-index: 10; 
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--box-bg); 
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); 
+            transition: opacity 0.3s, box-shadow 0.2s, border-color 0.2s, transform 0s;
+            cursor: grab;
+            min-width: 150px;
+            min-height: 100px;
+            overflow: hidden; /* Hide content overflow during resize */
         }
         
-        /* X Account Nugget (Bottom Center) */
-        .nugget.x-account {
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            font-size: var(--small-font-size);
-        }
-        .nugget.x-account .nugget-title {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
-        }
-        .nugget.x-account a {
-            font-weight: bold;
+        #main-container {
+            width: 450px;
+            height: 350px;
         }
 
-        /* Video Nugget (Bottom Right) */
-        .nugget.video {
-            right: 40px;
-            width: 240px; 
-            background-color: black; 
-            border-color: black; 
+        .draggable-box.dragging {
+            cursor: grabbing;
+            opacity: 0.95;
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.3); /* Blue shadow when dragging */
         }
-        .nugget.video .nugget-title {
-            color: white; 
-            font-weight: bold;
-            font-size: var(--small-font-size);
-            margin-bottom: 5px;
-            display: block;
-        }
-        .nugget.video iframe {
-            display: block; 
-            width: 100%;
-            height: 135px; 
-            border: none;
-        }
-
-
-        /* --- Interactive Effects --- */
-        .cursor-dot, .cursor-outline {
-            position: fixed;
-            border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            transition: transform 0.05s ease-out; 
-            z-index: 1000;
-        }
-        .cursor-dot {
-            width: 3px; 
-            height: 3px;
-            background-color: var(--text-color);
-        }
-        .cursor-outline {
-            width: 12px; 
-            height: 12px;
+        
+        /* --- RESIZE HANDLES --- */
+        .resize-handle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--bg-color);
             border: 1px solid var(--link-color);
-            mix-blend-mode: difference;
-        }
-        .ripple {
-            position: absolute;
-            border-radius: 50%;
-            pointer-events: none;
-            background: radial-gradient(circle, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0) 70%); 
-            transform: scale(0);
-            animation: ripple-anim 0.6s ease-out; 
-            z-index: 5;
-        }
-        @keyframes ripple-anim {
-            to {
-                transform: scale(2);
-                opacity: 0;
-            }
+            border-radius: 3px;
+            z-index: 100; 
+            opacity: 0.7;
+            transition: opacity 0.1s;
         }
 
-        /* --- Background Particles (Pure CSS for minimal impact) --- */
-        .particles-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 0;
+        .resize-handle:hover {
+            opacity: 1;
         }
 
-        .particle {
-            position: absolute;
-            background-color: rgba(0, 0, 0, 0.05); /* Very subtle gray/black */
-            border-radius: 50%;
-            animation: particle-move linear infinite;
-            opacity: 0;
+        /* Handle positioning and cursors */
+        .top-left { top: -5px; left: -5px; cursor: nwse-resize; }
+        .top-right { top: -5px; right: -5px; cursor: nesw-resize; }
+        .bottom-left { bottom: -5px; left: -5px; cursor: nesw-resize; }
+        .bottom-right { bottom: -5px; right: -5px; cursor: nwse-resize; }
+        
+        /* Box Handle/Title - SMALLER FONT HERE */
+        .box-handle {
+            font-weight: 600; display: flex; justify-content: space-between; align-items: center; 
+            border-bottom: 1px solid var(--border-color);
+            margin: -15px -15px 10px -15px; /* Adjust padding removal */
+            padding: 8px 15px; 
+            color: var(--link-color); 
+            font-size: 0.75em; /* Reduced size */
+            text-transform: uppercase;
+            cursor: grab;
+        }
+        .box-handle .action-btn {
+            background: var(--link-color); border: none; color: white; 
+            font-size: 0.7em; padding: 2px 7px; border-radius: 4px; cursor: pointer; 
+            transition: background 0.2s, opacity 0.2s;
+        }
+        .box-handle .action-btn:hover {
+            background: var(--accent-color);
         }
 
-        /* Particle specific animations will be set by JS for more control */
-        @keyframes particle-move {
-            0% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
-            5% { opacity: 0.5; }
-            95% { opacity: 0; }
-            100% { transform: translate(var(--target-x), var(--target-y)) scale(1); opacity: 0; }
+        .box-content {
+            height: calc(100% - 30px); /* Adjust height for handle */
+            overflow: auto;
+            padding-right: 5px; /* Space for scrollbar */
         }
+        .box-content iframe {
+            display: block; width: 100%; height: 100%; border: none; background-color: var(--box-bg);
+        }
+
+        /* Dino Box Specifics (for maximization) */
+        .dino-box { 
+            width: 500px; 
+            height: 350px; 
+            padding: 0; 
+            background: black;
+        }
+        .dino-box .box-content { 
+            height: calc(100% - 35px); /* Adjusted for handle height */
+            padding: 0;
+        }
+        .dino-box .box-handle { 
+            margin: 0; 
+            height: 35px; 
+            background-color: var(--box-bg);
+            border-radius: 8px 8px 0 0;
+            cursor: grab;
+        }
+        .dino-box.maximized {
+            width: 98vw !important; 
+            height: 98vh !important;
+            top: 1vh !important;
+            left: 1vw !important;
+            border: 2px solid var(--link-color);
+            box-shadow: 0 0 25px rgba(0, 123, 255, 0.5); 
+            z-index: 999;
+        }
+        /* Calculator Styles */
+        #calculator-ui {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            padding: 5px;
+            max-width: 250px;
+        }
+        #calc-display {
+            grid-column: span 4;
+            background: #fff;
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            text-align: right;
+            font-size: 1.5em;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .calc-btn {
+            padding: 15px 10px;
+            background: #e0e0e0;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+        .calc-btn:hover {
+            background: #d0d0d0;
+        }
+        .calc-op { background: #b0d8ff; color: var(--text-color); }
+        .calc-eq { background: var(--accent-color); color: white; grid-column: span 2; }
+        .calc-clear { background: #ffaaaa; }
+
+        /* Streaming Links */
+        .streaming-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .streaming-links a {
+            padding: 8px;
+            background: var(--link-color);
+            color: white;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .streaming-links a:hover {
+            background: var(--accent-color);
+        }
+
+        /* Clock styles */
+        .clock-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .clock-item {
+            font-size: 1.05em;
+            font-weight: 400;
+            padding: 4px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        
+        /* Timer Styles */
+        .timer-display {
+            font-size: 2.5em;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--link-color);
+        }
+        .timer-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .timer-controls button {
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .timer-controls button:hover {
+            opacity: 0.8;
+        }
+        .timer-input-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .timer-input-group input {
+            width: 60px;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            text-align: center;
+            font-size: 1em;
+        }
+
     </style>
 </head>
-<body>
-    
-    <div id="cursor-dot" class="cursor-dot"></div>
-    <div id="cursor-outline" class="cursor-outline"></div>
+<body class="blurred-content">
+    <!-- Load Tailwind and Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
 
-    <div class="particles-bg" id="particles-bg"></div>
-
-    <div class="copyright">© mmxxv</div>
-
-    <div class="container">
-        <h1 id="main-title"><span style="font-weight: bold;">bhagyam tiwari</span></h1>
-
-        <div class="social-icons">
-            <a href="https://twitter.com/maygahb" target="_blank" title="x: @maygahb">
-                <i class="fa-brands fa-x-twitter"></i>
-            </a>
-            <a href="https://instagram.com/bhagyamtiwari" target="_blank" title="instagram: @bhagyamtiwari">
-                <i class="fa-brands fa-instagram"></i>
-            </a>
-            <a href="mailto:btiwarinine@gmail.com" title="email: btiwarinine@gmail.com">
-                <i class="fa-solid fa-envelope"></i>
-            </a>
+    <!-- --- AUTHENTICATION OVERLAY --- -->
+    <div id="auth-overlay">
+        <div id="auth-box">
+            <h2 style="font-size: 1.5em; margin-bottom: 5px; color: var(--text-color);">access restricted</h2>
+            <p style="color: #666; margin-bottom: 10px;">enter the secret phrase to unlock the desktop.</p>
+            <input type="password" id="password-input" placeholder="secret phrase">
+            <button id="unlock-btn" onclick="checkPassword()">unlock desktop</button>
+            <p id="auth-message" style="color: red; margin-top: 10px; font-size: 0.9em;"></p>
         </div>
+    </div>
+    
+    <!-- --- MAIN CONTENT CONTAINER --- -->
+    <div class="draggable-box" id="main-container" style="top: 50px; left: 50px;">
+        <div class="resize-handle top-left" data-direction="tl"></div>
+        <div class="resize-handle top-right" data-direction="tr"></div>
+        <div class="resize-handle bottom-left" data-direction="bl"></div>
+        <div class="resize-handle bottom-right" data-direction="br"></div>
+        <div class="box-handle" style="cursor: grab;"><span>/bhagyam_tiwari/profile.txt</span></div>
         
-        <div class="statement">i don't code for a living.</div>
+        <div class="box-content">
+            <h1 id="main-title" style="font-size: 2.2em; margin: 0 0 10px 0; color: var(--text-color); font-weight: 700;">bhagyam tiwari</h1>
+            
+            <div class="social-icons">
+                <a href="https://twitter.com/maygahb" target="_blank" title="x: @maygahb">
+                    <i class="fa-brands fa-x-twitter"></i>
+                </a>
+                <a href="https://instagram.com/bhagyamtiwari" target="_blank" title="instagram: @bhagyamtiwari">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="mailto:btiwarinine@gmail.com" title="email: btiwarinine@gmail.com">
+                    <i class="fa-solid fa-envelope"></i>
+                </a>
+            </div>
+            
+            <div class="statement" style="font-size: 1.1em; font-style: italic; margin-bottom: 15px;">i don't code for a living.</div>
 
-        <span class="bio-intro">linkedin bio from 2024 that i couldn't be bothered to change:</span>
-        <p class="bio-paragraph">finance major pursuing a bba at the zicklin school of business, baruch college, city university of new york. raised in belarus, turkey, pakistan, india, and the united states, with an internationally peripatetic upbringing and diverse educational experiences. internship experiences in the financial services industry and municipal bond markets. concurrently building an early-stage startup based in new delhi, india.</p>
-    </div>
-
-    <div class="nugget image">
-        <p style="margin: 0 0 5px 0; font-weight: bold;">an image i find interesting</p>
-        <img src="https://pbs.twimg.com/media/GFaDFx9XkAAoD7r.jpg" alt="elon musk staring at debris">
-        <p class="nugget-caption">elon musk reviewing the debris of the first failed falcon 1 launch, one of spacex's early rocket failures.</p>
+            <span class="bio-intro" style="font-size: 0.9em; color: #666;">linkedin bio from 2024 that i couldn't be bothered to change:</span>
+            <p class="bio-paragraph" style="font-size: 1em; margin-top: 5px;">finance major pursuing a bba at the zicklin school of business, baruch college, city university of new york. raised in belarus, turkey, pakistan, india, and the united states, with an internationally peripatetic upbringing and diverse educational experiences. internship experiences in the financial services industry and municipal bond markets. concurrently building an early-stage startup based in new delhi, india.</p>
+        </div>
     </div>
     
-    <div class="nugget x-account">
-        <span class="nugget-title">x account recommendation</span>
-        <p style="margin: 0; line-height: 1.3;">
-            <a href="https://x.com/thedulab" target="_blank">@thedulab</a><br>
-            for thoughtful threads.
-        </p>
+    <!-- --- DRAGGABLE BOXES --- -->
+
+    <!-- 1. Calculator Box -->
+    <div class="draggable-box" style="width: 280px; height: 350px; top: 430px; left: 50px;">
+        <div class="resize-handle top-left" data-direction="tl"></div>
+        <div class="resize-handle top-right" data-direction="tr"></div>
+        <div class="resize-handle bottom-left" data-direction="bl"></div>
+        <div class="resize-handle bottom-right" data-direction="br"></div>
+        <div class="box-handle" style="cursor: grab;"><span>/applications/calc.exe</span></div>
+        <div class="box-content">
+            <div id="calculator-ui">
+                <div id="calc-display">0</div>
+                <button class="calc-btn calc-clear" onclick="clearDisplay()">AC</button>
+                <button class="calc-btn calc-op" onclick="appendOperator('%')">%</button>
+                <button class="calc-btn calc-op" onclick="appendOperator('/')">÷</button>
+                <button class="calc-btn calc-op" onclick="appendOperator('*')">×</button>
+                
+                <button class="calc-btn" onclick="appendNumber('7')">7</button>
+                <button class="calc-btn" onclick="appendNumber('8')">8</button>
+                <button class="calc-btn" onclick="appendNumber('9')">9</button>
+                <button class="calc-btn calc-op" onclick="appendOperator('-')">-</button>
+                
+                <button class="calc-btn" onclick="appendNumber('4')">4</button>
+                <button class="calc-btn" onclick="appendNumber('5')">5</button>
+                <button class="calc-btn" onclick="appendNumber('6')">6</button>
+                <button class="calc-btn calc-op" onclick="appendOperator('+')">+</button>
+                
+                <button class="calc-btn" onclick="appendNumber('1')">1</button>
+                <button class="calc-btn" onclick="appendNumber('2')">2</button>
+                <button class="calc-btn" onclick="appendNumber('3')">3</button>
+                
+                <button class="calc-btn" onclick="appendNumber('0')">0</button>
+                <button class="calc-btn" onclick="appendDecimal()">.</button>
+                <button class="calc-btn calc-eq" onclick="calculateResult()">=</button>
+            </div>
+        </div>
     </div>
     
-    <div class="nugget video">
-        <span class="nugget-title">a youtube video i can always rewatch (muted)</span>
-        <iframe 
-            src="https://www.youtube.com/embed/DzXVMjsZloE?start=84&autoplay=1&mute=1&controls=0&loop=1&playlist=DzXVMjsZloE" 
-            title="youtube video player" 
-            frameborder="0" 
-            allow="autoplay; encrypted-media" 
-            allowfullscreen>
-        </iframe>
+    <!-- 2. Clocks Box -->
+    <div class="draggable-box" style="width: 300px; height: 280px; top: 50px; left: 550px;">
+        <div class="resize-handle top-left" data-direction="tl"></div>
+        <div class="resize-handle top-right" data-direction="tr"></div>
+        <div class="resize-handle bottom-left" data-direction="bl"></div>
+        <div class="resize-handle bottom-right" data-direction="br"></div>
+        <div class="box-handle" style="cursor: grab;"><span>/time_temp/global_time.dat</span></div>
+        <div class="box-content">
+            <h3 style="margin: 0 0 10px 0; font-size: 1.2em; font-weight: 600;">global time status</h3>
+            <ul class="clock-list" id="clock-container">
+                <li class="clock-item" id="delhi-time">loading delhi...</li>
+                <li class="clock-item" id="mumbai-time">loading mumbai...</li>
+                <li class="clock-item" id="bangalore-time">loading bangalore...</li>
+                <li class="clock-item" id="dubai-time">loading dubai...</li>
+                <li class="clock-item" id="newyork-time">loading new york...</li>
+                <li class="clock-item" id="london-time">loading london...</li>
+            </ul>
+        </div>
     </div>
+
+    <!-- 3. Timer Box -->
+    <div class="draggable-box" style="width: 250px; height: 280px; top: 350px; left: 580px;">
+        <div class="resize-handle top-left" data-direction="tl"></div>
+        <div class="resize-handle top-right" data-direction="tr"></div>
+        <div class="resize-handle bottom-left" data-direction="bl"></div>
+        <div class="resize-handle bottom-right" data-direction="br"></div>
+        <div class="box-handle" style="cursor: grab;"><span>/applications/timer.app</span></div>
+        <div class="box-content">
+            <h3 style="margin: 0 0 10px 0; font-size: 1.2em; font-weight: 600;">countdown timer</h3>
+            <div class="timer-display" id="timer-display">00:00</div>
+            <div class="timer-input-group">
+                <input type="number" id="minutes-input" value="1" min="0" max="59" placeholder="min">
+                <input type="number" id="seconds-input" value="0" min="0" max="59" placeholder="sec">
+            </div>
+            <div class="timer-controls">
+                <button style="background: var(--accent-color); color: white;" onclick="startTimer()">start</button>
+                <button style="background: #ffcc00; color: var(--text-color);" onclick="pauseTimer()">pause</button>
+                <button style="background: #ffaaaa; color: var(--text-color);" onclick="resetTimer()">reset</button>
+            </div>
+            <p id="timer-status" style="text-align: center; font-size: 0.9em; color: var(--link-color); margin-top: 10px;">set duration and click start.</p>
+        </div>
+    </div>
+
+
+    <!-- 4. Dino Game Box -->
+    <div class="draggable-box dino-box" id="dino-box" style="width: 500px; height: 350px; top: 700px; left: 50px;">
+        <div class="resize-handle top-left" data-direction="tl"></div>
+        <div class="resize-handle top-right" data-direction="tr"></div>
+        <div class="resize-handle bottom-left" data-direction="bl"></div>
+        <div class="resize-handle bottom-right" data-direction="br"></div>
+        <div class="box-handle">
+            <span>/games/dino_runner.exe</span>
+            <button class="action-btn" id="maximize-dino">[MAXIMIZE]</button>
+        </div>
+        <div class="box-content">
+            <iframe id="dino-iframe" src="https://chromedino.com/" title="Chrome Dino Game" frameborder="0" scrolling="no" loading="lazy"></iframe>
+        </div>
+    </div>
+
+    <!-- 5. Sudoku Embed Box (Increased Size for better usability) -->
+    <div class="draggable-box" style="width: 750px; height: 700px; top: 50px; left: 900px; padding: 0;">
+        <div class="resize-handle top-left" data-direction="tl"></div>
+        <div class="resize-handle top-right" data-direction="tr"></div>
+        <div class="resize-handle bottom-left" data-direction="bl"></div>
+        <div class="resize-handle bottom-right" data-direction="br"></div>
+        <div class="box-handle" style="cursor: grab; margin: 0; border-radius: 8px 8px 0 0;"><span>/games/daily_sudoku.web</span></div>
+        <div class="box-content" style="height: calc(100% - 35px); padding: 0;">
+            <!-- Using an external daily sudoku embed -->
+            <iframe src="https://sudoku.com/embed/daily/?theme=light" title="Daily Sudoku" frameborder="0" scrolling="no" allowfullscreen></iframe>
+        </div>
+    </div>
+    
+    <!-- 6. Streaming Links Box -->
+    <div class="draggable-box" style="width: 250px; height: 280px; top: 700px; left: 850px;">
+        <div class="resize-handle top-left" data-direction="tl"></div>
+        <div class="resize-handle top-right" data-direction="tr"></div>
+        <div class="resize-handle bottom-left" data-direction="bl"></div>
+        <div class="resize-handle bottom-right" data-direction="br"></div>
+        <div class="box-handle" style="cursor: grab;"><span>/links/streaming.url</span></div>
+        <div class="box-content">
+            <h3 style="margin: 0 0 10px 0; font-size: 1.2em; font-weight: 600;">streaming services</h3>
+            <div class="streaming-links">
+                <a href="https://www.netflix.com/" target="_blank">netflix</a>
+                <a href="https://www.hotstar.com/in" target="_blank">jiohotstar</a>
+                <a href="https://www.primevideo.com/" target="_blank">amazon prime video</a>
+                <a href="https://www.sonyliv.com/" target="_blank">sonyliv</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 7. Fact of the Day Box -->
+    <div class="draggable-box" style="width: 350px; height: 150px; top: 800px; left: 450px;">
+        <div class="resize-handle top-left" data-direction="tl"></div>
+        <div class="resize-handle top-right" data-direction="tr"></div>
+        <div class="resize-handle bottom-left" data-direction="bl"></div>
+        <div class="resize-handle bottom-right" data-direction="br"></div>
+        <div class="box-handle" style="cursor: grab;"><span>/info/fact_of_day.txt</span></div>
+        <div class="box-content">
+            <div class="flex items-center mb-2">
+                <i class="material-icons text-xl mr-2 text-red-500">lightbulb_outline</i>
+                <h3 style="margin: 0; font-size: 1.2em; font-weight: 600;">fact of the day</h3>
+            </div>
+            <p id="daily-fact" style="font-size: 1em; margin: 0;">
+                the earth's rotation is slowing down at a rate of approximately 1.8 milliseconds per century, which means that in millions of years, a day will be significantly longer.
+            </p>
+        </div>
+    </div>
+    
+    <!-- 8. NYT Wordle Link Box -->
+    <div class="draggable-box" style="width: 250px; height: 100px; top: 800px; left: 1200px;">
+        <div class="resize-handle top-left" data-direction="tl"></div>
+        <div class="resize-handle top-right" data-direction="tr"></div>
+        <div class="resize-handle bottom-left" data-direction="bl"></div>
+        <div class="resize-handle bottom-right" data-direction="br"></div>
+        <span class="box-handle">nyt_wordle.url</span>
+        <div class="box-content">
+            <h3 style="margin: 0 0 5px 0; font-size: 1.2em; font-weight: 600;">nyt wordle</h3>
+            <p style="margin: 0; line-height: 1.3;">
+                <a href="https://www.nytimes.com/games/wordle/index.html" target="_blank" style="font-size: 1.1em; font-weight: 600;">click here to play</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- 9. WSOP Link Box (New Link) -->
+    <div class="draggable-box" style="width: 250px; height: 100px; top: 800px; left: 1480px;">
+        <div class="resize-handle top-left" data-direction="tl"></div>
+        <div class="resize-handle top-right" data-direction="tr"></div>
+        <div class="resize-handle bottom-left" data-direction="bl"></div>
+        <div class="resize-handle bottom-right" data-direction="br"></div>
+        <span class="box-handle">wsop.url</span>
+        <div class="box-content">
+            <h3 style="margin: 0 0 5px 0; font-size: 1.2em; font-weight: 600;">wsop (poker)</h3>
+            <p style="margin: 0; line-height: 1.3;">
+                <a href="https://www.playwsop.com/play" target="_blank" style="font-size: 1.1em; font-weight: 600;">click here to play wsop</a>
+            </p>
+        </div>
+    </div>
+
 
     <script>
-        // === 1. Kinetic Text Effect for Title ===
-        function applyKineticEffect(elementId) {
-            const element = document.getElementById(elementId);
-            if (!element) return;
+        // === AUTHENTICATION LOGIC ===
+        // The password has been set to the requested value.
+        const CORRECT_PASSWORD = 'bhagyamisawesome';
 
-            const textContent = element.querySelector('span').textContent; 
-            element.innerHTML = ''; 
+        function checkPassword() {
+            const input = document.getElementById('password-input').value.toLowerCase().trim();
+            const message = document.getElementById('auth-message');
+            const body = document.body;
+            const overlay = document.getElementById('auth-overlay');
+            const authBox = document.getElementById('auth-box');
 
-            textContent.split('').forEach(char => {
-                const span = document.createElement('span');
-                span.className = 'kinetic-letter';
-                span.textContent = char === ' ' ? '\u00A0' : char;
-                span.style.fontWeight = 'bold'; 
-                element.appendChild(span);
-            });
+            console.log('Attempting password check. Input:', input); // Debug log
+
+            // Reset error state
+            message.textContent = '';
+            authBox.classList.remove('shake');
+
+
+            if (input === CORRECT_PASSWORD) {
+                console.log('Password correct. Unlocking desktop.'); // Debug log
+                
+                // 1. Remove blur immediately
+                body.classList.remove('blurred-content'); 
+                
+                // 2. Fade out the overlay
+                overlay.style.opacity = '0';
+                
+                // 3. Clean up the overlay and start desktop functions after fade
+                setTimeout(() => {
+                    overlay.remove();
+                    // Re-enable pointer events for the body content
+                    body.style.pointerEvents = 'auto'; 
+                    // Set initial Z-index and start clocks once unlocked
+                    setInitialZIndex();
+                    updateClocks();
+                    setInterval(updateClocks, 1000);
+                }, 800); 
+            } else {
+                // Incorrect password: Show error and shake box
+                message.textContent = 'incorrect secret phrase. try again.';
+                authBox.classList.add('shake');
+                document.getElementById('password-input').value = ''; // Clear input
+                console.warn('Password incorrect:', input); // Debug log
+            }
         }
-        applyKineticEffect('main-title');
+
+        // Add event listener for Enter key on password field
+        document.addEventListener('DOMContentLoaded', () => {
+            const passwordInput = document.getElementById('password-input');
+            if (passwordInput) {
+                passwordInput.focus();
+                passwordInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        checkPassword();
+                    }
+                });
+            }
+        });
+
+        // ===================================
+        // === CORE DESKTOP LOGIC (Runs after unlock) ===
+        // ===================================
+
+        const MIN_SIZE = 150; 
+        const MIN_Z_INDEX = 10;
+        let currentMaxZ = MIN_Z_INDEX; 
+
+        const draggableBoxes = document.querySelectorAll('.draggable-box');
+        const resizeHandles = document.querySelectorAll('.resize-handle');
+        const dinoBox = document.getElementById('dino-box');
+        const maximizeDinoButton = document.getElementById('maximize-dino');
+        
+        // Dragging State
+        let activeDraggableBox = null;
+        let dragOffsetX, dragOffsetY;
+
+        // Resizing State
+        let isResizing = false;
+        let activeBox = null;
+        let activeHandle = null;
+        let startX, startY, initialW, initialH, initialL, initialT;
+
+        // Dino State
+        let isDinoMaximized = false;
+        let dinoRestoreState = {};
+
+        // Timer State
+        let timerInterval = null;
+        let timeRemaining = 0;
+        let isTimerRunning = false;
+        const timerDisplay = document.getElementById('timer-display');
+        const minutesInput = document.getElementById('minutes-input');
+        const secondsInput = document.getElementById('seconds-input');
+        const timerStatus = document.getElementById('timer-status');
 
 
-        // === 2. Cursor Trail Effect ===
-        const cursorDot = document.getElementById('cursor-dot');
-        const cursorOutline = document.getElementById('cursor-outline');
+        function setInitialZIndex() {
+             draggableBoxes.forEach((box) => {
+                currentMaxZ++;
+                box.style.zIndex = currentMaxZ;
+             });
+        }
+
+        // --- DRAGGING LOGIC ---
+        draggableBoxes.forEach(box => {
+            const handle = box.querySelector('.box-handle') || box;
+            
+            handle.addEventListener('mousedown', (e) => {
+                if (e.button !== 0 || e.target.closest('.resize-handle') || e.target.closest('.action-btn') || e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON' || document.body.classList.contains('blurred-content')) return;
+                
+                if (box.id === 'dino-box' && isDinoMaximized) return;
+
+                activeDraggableBox = box;
+                box.classList.add('dragging');
+                
+                currentMaxZ++;
+                box.style.zIndex = currentMaxZ;
+                
+                const rect = box.getBoundingClientRect();
+                dragOffsetX = e.clientX - rect.left;
+                dragOffsetY = e.clientY - rect.top;
+
+                document.body.style.userSelect = 'none';
+            });
+        });
+
+        // --- RESIZING LOGIC ---
+        function startResize(e) {
+            if (e.button !== 0 || activeDraggableBox || document.body.classList.contains('blurred-content')) return; 
+
+            activeHandle = e.target;
+            activeBox = activeHandle.closest('.draggable-box');
+            
+            if (activeBox.id === 'dino-box' && isDinoMaximized) return;
+
+            isResizing = true;
+            activeBox.classList.add('dragging'); 
+            
+            currentMaxZ++;
+            activeBox.style.zIndex = currentMaxZ;
+
+            startX = e.clientX;
+            startY = e.clientY;
+            
+            initialW = parseFloat(getComputedStyle(activeBox).width);
+            initialH = parseFloat(getComputedStyle(activeBox).height);
+            initialL = parseFloat(activeBox.style.left);
+            initialT = parseFloat(activeBox.style.top);
+        }
+
+        function moveResize(e) {
+            if (!isResizing || !activeBox) return;
+
+            const deltaX = e.clientX - startX;
+            const deltaY = e.clientY - startY;
+            const direction = activeHandle.getAttribute('data-direction');
+
+            let newW = initialW;
+            let newH = initialH;
+            let newL = initialL;
+            let newT = initialT;
+            
+            switch (direction) {
+                case 'tl': 
+                    newW = Math.max(MIN_SIZE, initialW - deltaX);
+                    newH = Math.max(MIN_SIZE, initialH - deltaY);
+                    
+                    if (newW > MIN_SIZE) newL = initialL + deltaX; else newL = initialL + (initialW - MIN_SIZE);
+                    if (newH > MIN_SIZE) newT = initialT + deltaY; else newT = initialT + (initialH - MIN_SIZE);
+                    break;
+                case 'tr': 
+                    newW = Math.max(MIN_SIZE, initialW + deltaX);
+                    newH = Math.max(MIN_SIZE, initialH - deltaY);
+                    
+                    if (newH > MIN_SIZE) newT = initialT + deltaY; else newT = initialT + (initialH - MIN_SIZE);
+                    break;
+                case 'bl': 
+                    newW = Math.max(MIN_SIZE, initialW - deltaX);
+                    newH = Math.max(MIN_SIZE, initialH + deltaY);
+
+                    if (newW > MIN_SIZE) newL = initialL + deltaX; else newL = initialL + (initialW - MIN_SIZE);
+                    break;
+                case 'br': 
+                    newW = Math.max(MIN_SIZE, initialW + deltaX);
+                    newH = Math.max(MIN_SIZE, initialH + deltaY);
+                    break;
+            }
+
+            activeBox.style.width = newW + 'px';
+            activeBox.style.height = newH + 'px';
+            activeBox.style.left = newL + 'px';
+            activeBox.style.top = newT + 'px';
+
+            if (activeBox.id === 'dino-box') {
+                const content = activeBox.querySelector('.box-content');
+                if (content) content.style.height = (newH - 35) + 'px';
+            }
+        }
+
+        function endResize() {
+            if (isResizing) {
+                isResizing = false;
+                if (activeBox) activeBox.classList.remove('dragging');
+                activeBox = null;
+                activeHandle = null;
+            }
+        }
+        
+        resizeHandles.forEach(handle => {
+            handle.addEventListener('mousedown', startResize);
+        });
 
         document.addEventListener('mousemove', (e) => {
-            cursorDot.style.left = e.clientX + 'px';
-            cursorDot.style.top = e.clientY + 'px';
-            cursorOutline.style.left = e.clientX + 'px';
-            cursorOutline.style.top = e.clientY + 'px';
+            if (isResizing) {
+                moveResize(e);
+            }
+            else if (activeDraggableBox) {
+                let newX = e.clientX - dragOffsetX;
+                let newY = e.clientY - dragOffsetY;
+
+                const boxRect = activeDraggableBox.getBoundingClientRect();
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+
+                newX = Math.max(0, Math.min(newX, viewportWidth - boxRect.width));
+                newY = Math.max(0, Math.min(newY, viewportHeight - boxRect.height));
+
+                activeDraggableBox.style.left = newX + 'px';
+                activeDraggableBox.style.top = newY + 'px';
+            }
         });
 
-        // === 3. Ripple Effect (Puddles) ===
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('a') || e.target.closest('.nugget')) {
-                return; 
+        document.addEventListener('mouseup', () => {
+            endResize();
+            if (activeDraggableBox) {
+                activeDraggableBox.classList.remove('dragging');
+                activeDraggableBox = null;
+                document.body.style.userSelect = 'auto';
             }
+        });
+
+        document.body.oncontextmenu = (e) => { e.preventDefault(); };
+
+        // --- Dino Game Maximize Logic ---
+        if (maximizeDinoButton) {
+            maximizeDinoButton.addEventListener('click', toggleDinoMaximize);
+        }
+
+        function toggleDinoMaximize() {
+            if (isDinoMaximized) {
+                dinoBox.classList.remove('maximized');
+                dinoBox.style.width = dinoRestoreState.width;
+                dinoBox.style.height = dinoRestoreState.height;
+                dinoBox.style.left = dinoRestoreState.left;
+                dinoBox.style.top = dinoRestoreState.top;
+                dinoBox.style.zIndex = dinoRestoreState.zIndex;
+                maximizeDinoButton.textContent = '[RESTORE]';
+                dinoBox.style.pointerEvents = 'auto'; 
+            } else {
+                dinoRestoreState = {
+                    width: dinoBox.style.width,
+                    height: dinoBox.style.height,
+                    left: dinoBox.style.left,
+                    top: dinoBox.style.top,
+                    zIndex: dinoBox.style.zIndex
+                };
+
+                currentMaxZ = 999;
+                dinoBox.classList.add('maximized');
+                dinoBox.style.zIndex = currentMaxZ;
+                maximizeDinoButton.textContent = '[RESTORE]';
+                dinoBox.style.pointerEvents = 'all'; 
+            }
+            isDinoMaximized = !isDinoMaximized;
+        }
+
+
+        // --- Calculator Logic ---
+        let currentDisplay = '0';
+        let waitingForOperand = true;
+        let pendingOperation = null;
+        let firstOperand = null;
+        const displayElement = document.getElementById('calc-display');
+
+        function updateCalcDisplay() {
+            const maxLen = 15;
+            let displayValue = currentDisplay.length > maxLen ? currentDisplay.substring(0, maxLen) + '...' : currentDisplay;
+            displayElement.textContent = displayValue;
+        }
+
+        function clearDisplay() {
+            currentDisplay = '0';
+            waitingForOperand = true;
+            pendingOperation = null;
+            firstOperand = null;
+            updateCalcDisplay();
+        }
+
+        function appendNumber(num) {
+            if (waitingForOperand) {
+                currentDisplay = num;
+                waitingForOperand = false;
+            } else {
+                currentDisplay = currentDisplay === '0' ? num : currentDisplay + num;
+            }
+            updateCalcDisplay();
+        }
+
+        function appendDecimal() {
+            if (waitingForOperand) {
+                currentDisplay = '0.';
+                waitingForOperand = false;
+            } else if (!currentDisplay.includes('.')) {
+                currentDisplay += '.';
+            }
+            updateCalcDisplay();
+        }
+
+        function appendOperator(nextOperation) {
+            const inputValue = parseFloat(currentDisplay);
             
-            const ripple = document.createElement('div');
-            ripple.className = 'ripple';
-            document.body.appendChild(ripple);
-
-            const size = 60; 
-            ripple.style.width = size + 'px';
-            ripple.style.height = size + 'px';
-            ripple.style.left = e.clientX - (size / 2) + 'px';
-            ripple.style.top = e.clientY - (size / 2) + 'px';
-
-            setTimeout(() => {
-                ripple.remove();
-            }, 600); 
-        });
-
-        // === 4. Subtle Background Particles ===
-        const particlesContainer = document.getElementById('particles-bg');
-        const numParticles = 20; // Fewer particles for subtlety
-
-        function createParticle() {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particlesContainer.appendChild(particle);
-
-            const size = Math.random() * 2 + 1; // 1-3px
-            particle.style.width = size + 'px';
-            particle.style.height = size + 'px';
-
-            const startX = Math.random() * window.innerWidth;
-            const startY = Math.random() * window.innerHeight;
-            const endX = Math.random() * window.innerWidth;
-            const endY = Math.random() * window.innerHeight;
-            const duration = Math.random() * 8 + 4; // 4-12 seconds
-
-            particle.style.setProperty('--x', startX + 'px');
-            particle.style.setProperty('--y', startY + 'px');
-            particle.style.setProperty('--target-x', endX + 'px');
-            particle.style.setProperty('--target-y', endY + 'px');
-            particle.style.animationDuration = duration + 's';
-            particle.style.animationDelay = (Math.random() * -duration) + 's'; // Stagger start times
-
-            // Remove particle after animation to prevent DOM bloat
-            particle.addEventListener('animationend', () => {
-                particle.remove();
-                // createParticle(); // Optionally recreate for continuous loop
-            });
-            return particle;
-        }
-
-        // Initialize particles
-        for (let i = 0; i < numParticles; i++) {
-            createParticle();
-        }
-
-        // Recreate particles on scroll/mouse movement (very subtle effect)
-        let particleCreationTimer;
-        document.addEventListener('mousemove', () => {
-            clearTimeout(particleCreationTimer);
-            particleCreationTimer = setTimeout(() => {
-                if (particlesContainer.children.length < numParticles * 1.5) { // Cap particles
-                    createParticle();
-                }
-            }, 500); // Only create new particles every 500ms on mousemove
-        });
-
-        // Ensure particles are continuously created even without mousemove
-        setInterval(() => {
-            if (particlesContainer.children.length < numParticles) {
-                createParticle();
+            if (firstOperand === null) {
+                firstOperand = inputValue;
+            } else if (pendingOperation) {
+                const result = performCalculation[pendingOperation](firstOperand, inputValue);
+                currentDisplay = String(result);
+                firstOperand = result;
             }
-        }, 2000); // Ensure at least 'numParticles' are present every 2 seconds
+
+            waitingForOperand = true;
+            pendingOperation = nextOperation;
+            updateCalcDisplay();
+        }
+
+        function calculateResult() {
+            if (firstOperand === null || pendingOperation === null) return;
+
+            const inputValue = parseFloat(currentDisplay);
+            const result = performCalculation[pendingOperation](firstOperand, inputValue);
+            
+            currentDisplay = String(result);
+            firstOperand = null;
+            pendingOperation = null;
+            waitingForOperand = true;
+            updateCalcDisplay();
+        }
+
+        const performCalculation = {
+            '+': (first, second) => first + second,
+            '-': (first, second) => first - second,
+            '*': (first, second) => first * second,
+            '/': (first, second) => first / second,
+            '%': (first, second) => (first / 100) * second
+        };
+        
+        // --- Time Logic ---
+        function updateClocks() {
+            const zones = [
+                { id: 'delhi-time', zone: 'Asia/Kolkata', label: 'delhi' },
+                { id: 'mumbai-time', zone: 'Asia/Kolkata', label: 'mumbai' },
+                { id: 'bangalore-time', zone: 'Asia/Kolkata', label: 'bangalore' },
+                { id: 'dubai-time', zone: 'Asia/Dubai', label: 'dubai' },
+                { id: 'newyork-time', zone: 'America/New_York', label: 'new york' },
+                { id: 'london-time', zone: 'Europe/London', label: 'london' }
+            ];
+
+            zones.forEach(city => {
+                const element = document.getElementById(city.id);
+                if (element) {
+                    const now = new Date();
+                    
+                    const options = {
+                        timeZone: city.zone,
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: true
+                    };
+                    
+                    const timeString = now.toLocaleTimeString('en-US', options);
+                    element.innerHTML = `${city.label}: <strong>${timeString}</strong>`;
+                }
+            });
+        }
+
+        // --- Timer Logic ---
+        function formatTime(totalSeconds) {
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            const pad = (num) => String(num).padStart(2, '0');
+            return `${pad(minutes)}:${pad(seconds)}`;
+        }
+
+        function startTimer() {
+            if (isTimerRunning) return;
+
+            if (timeRemaining <= 0) {
+                const minutes = parseInt(minutesInput.value) || 0;
+                const seconds = parseInt(secondsInput.value) || 0;
+                timeRemaining = minutes * 60 + seconds;
+            }
+
+            if (timeRemaining <= 0) {
+                timerStatus.textContent = 'please set a time > 0.';
+                return;
+            }
+
+            isTimerRunning = true;
+            timerStatus.textContent = 'timer is running...';
+            
+            timerInterval = setInterval(() => {
+                if (timeRemaining > 0) {
+                    timeRemaining--;
+                    timerDisplay.textContent = formatTime(timeRemaining);
+                } else {
+                    clearInterval(timerInterval);
+                    isTimerRunning = false;
+                    timerStatus.textContent = 'time\'s up!';
+                    timerDisplay.textContent = '00:00';
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            if (!isTimerRunning) return;
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            timerStatus.textContent = 'timer paused.';
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            timeRemaining = 0;
+            timerDisplay.textContent = '00:00';
+            minutesInput.value = '1';
+            secondsInput.value = '0';
+            timerStatus.textContent = 'set duration and click start.';
+        }
 
     </script>
 </body>
